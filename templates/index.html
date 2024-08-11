@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+    <title>Spell Checker</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        async function checkSpelling() {
+            let text = document.getElementById("inputText").value;
+            let method = document.getElementById("correctionMethod").value;
+            let response = await fetch('/check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text, method : method }),
+            });
+            let result = await response.json();
+            document.getElementById("correctedText").innerText = result.corrected;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Spell Checker - Input Text</h2>
+        <select id="correctionMethod" onchange="checkSpelling()">
+            <option value="textblob">TextBlob</option>
+            <option value="SymSpell">SymSpell</option>
+            <option value = "symspell+textblob">SymSpell+TextBlob</option>
+        </select>
+        <textarea id="inputText" onkeyup="checkSpelling()"></textarea>
+        <h2>Corrected Text</h2>
+        <p id="correctedText"></p>
+    </div>
+    <h3>Made By Dominic Murphy</h3>
+</body>
+</html>
