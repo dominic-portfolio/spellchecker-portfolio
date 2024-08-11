@@ -1,0 +1,4 @@
+flask
+symspellpy
+textblob
+pkg_resources
